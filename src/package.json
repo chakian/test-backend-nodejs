@@ -4,11 +4,15 @@
   "description": "Backend server of todo client applications",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Cagdas Korkut",
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^24.0.15",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
   }
 }
