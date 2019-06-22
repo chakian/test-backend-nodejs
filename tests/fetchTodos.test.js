@@ -1,4 +1,4 @@
-import fetchTodos = require('../src/TodoFetcher');
+const fetchTodos = require('../fetchTodos');
 
 test('fetch all items', () => {
     //arrange

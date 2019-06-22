@@ -2,19 +2,15 @@
   "name": "todo-server",
   "version": "1.0.0",
   "description": "Backend server of todo client applications",
-  "main": "./build/server.js",
+  "main": "server.js",
   "scripts": {
-    "test": "jest",
-    "tsc": "tsc"
+    "test": "jest"
   },
   "author": "Cagdas Korkut",
   "license": "ISC",
   "dependencies": {
-    "@babel/types": "^7.4.4",
-    "@types/express": "^4.17.0",
     "@types/jest": "^24.0.15",
-    "express": "^4.17.1",
-    "typescript": "^3.5.2"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "jest": "^24.8.0"
