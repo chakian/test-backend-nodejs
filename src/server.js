@@ -1,14 +1,17 @@
 var express = require('express');
 var app = express();
 
-app.get('/', function (req, res) {
+app.get('*', function (req, res) {
     res.send('This server only accepts POST requests!');
 });
-app.delete('/', function (req, res) {
+app.delete('*', function (req, res) {
     res.send('This server only accepts POST requests!');
 });
-app.put('/', function (req, res) {
+app.put('*', function (req, res) {
     res.send('This server only accepts POST requests!');
+});
+app.post('*', function(req, res) {
+    res.send('Invalid route for post operation!');
 });
 
 app.post('/fetch-todo', function(req, res) {

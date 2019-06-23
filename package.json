@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@types/jest": "^24.0.15",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongodb": "^3.2.7"
   },
   "devDependencies": {
     "jest": "^24.8.0"
