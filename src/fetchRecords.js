@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
+//mongoose.Promise = global.Promise;
 
 var env = process.env.NODE_ENV || 'development';
 var config = require('./config')[env];
@@ -31,7 +31,7 @@ var recordSchema = new mongoose.Schema({
 
 var records = mongoose.model("records", recordSchema);
 
-async function fetchRecords(params) {
+function fetchRecords(params) {
     var startDate, endDate, minCount, maxCount;
 
     if (params.startDate) {
@@ -67,14 +67,6 @@ async function fetchRecords(params) {
         }
     }
 
-    mongoose.connect(url, mongoOptions).then(
-        () => {
-            console.log("connected to mongoDB")
-        },
-        (err) => {
-            console.log("err", err);
-        });
-
     const options = [
         { $match: {} },
         {
@@ -98,36 +90,27 @@ async function fetchRecords(params) {
         },
         {
             $match: {
-                //createdAt: { $gte: startDate, $lte: endDate },
+                createdAt: { $gte: startDate, $lte: endDate },
                 Total: { $gte: minCount, $lte: maxCount }
             }
         }
     ];
 
-    const query = records.aggregate(options);
-    const recordList = await query.exec();
-    /*.then(recordList => {
-        mongoose.disconnect();
+    mongoose.connect(url, mongoOptions).then(
+        () => {
+            console.log("Connected to mongoDB");
+            const query = records.aggregate(options);
+            query.exec().then(recordList => {
+                console.log(recordList);
 
-        if (!recordList) {
-            return "Unwanted error";
-        }
+                return recordList;
+            });
+        },
+        (err) => {
+            console.log("err", err);
 
-        console.log(recordList);
-
-        return recordList;
-
-    }).catch(error => {
-        mongoose.disconnect();
-
-        console.error(error);
-        //res.json({success: false, error: error.message});
-        next(error);
-    });*/
-
-    console.log(recordList);
-
-    return recordList;
+            return err;
+        });
 }
 
 module.exports = fetchRecords;
