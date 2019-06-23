@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 
+app.use(express.json());
+
 app.get('*', function (req, res) {
     res.send('This server only accepts POST requests!');
 });
@@ -18,7 +20,10 @@ app.post('/fetch-records', function(req, res) {
     const fetchRecords = require('../src/fetchRecords');
 
     const requestParams = {
-        startDate: "2019-01-01"
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        minCount: req.body.minCount,
+        maxCount: req.body.maxCount
     };
 
     var result = fetchRecords(requestParams);
