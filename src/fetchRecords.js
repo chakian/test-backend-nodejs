@@ -31,7 +31,7 @@ var recordSchema = new mongoose.Schema({
 
 var records = mongoose.model("records", recordSchema);
 
-function fetchRecords(params) {
+async function fetchRecords(params) {
     var startDate, endDate, minCount, maxCount;
 
     if (params.startDate) {
@@ -104,22 +104,30 @@ function fetchRecords(params) {
         }
     ];
 
-    var recordList;
-    records.aggregate(options, function (err, arr) {
-        //mongoose.disconnect();
-        if (err) {
-            console.log(err);
+    const query = records.aggregate(options);
+    const recordList = await query.exec();
+    /*.then(recordList => {
+        mongoose.disconnect();
 
-            return null;
+        if (!recordList) {
+            return "Unwanted error";
         }
-        else {
-            recordList = arr;
 
-            console.log(recordList);
+        console.log(recordList);
 
-            return recordList;
-        }
-    });
+        return recordList;
+
+    }).catch(error => {
+        mongoose.disconnect();
+
+        console.error(error);
+        //res.json({success: false, error: error.message});
+        next(error);
+    });*/
+
+    console.log(recordList);
+
+    return recordList;
 }
 
 module.exports = fetchRecords;

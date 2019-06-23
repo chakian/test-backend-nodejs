@@ -26,7 +26,7 @@ app.post('/fetch-records', function(req, res) {
         maxCount: req.body.maxCount
     };
 
-    var result = fetchRecords(requestParams);
+    const result = fetchRecords(requestParams);
 
     res.send(result);
 });
