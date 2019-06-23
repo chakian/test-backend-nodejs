@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var assert = require("assert");
 //mongoose.Promise = global.Promise;
 
 var env = process.env.NODE_ENV || 'development';
@@ -31,7 +32,7 @@ var recordSchema = new mongoose.Schema({
 
 var records = mongoose.model("records", recordSchema);
 
-function fetchRecords(params) {
+async function fetchRecords(params) {
     var startDate, endDate, minCount, maxCount;
 
     if (params.startDate) {
@@ -73,9 +74,8 @@ function fetchRecords(params) {
             $group: {
                 _id: "$_id",
                 key: { "$first": "$key" },
-                value: { "$first": "$value" },
                 createdAt: { "$first": "$createdAt" },
-                Total: {
+                totalCount: {
                     "$sum": {
                         "$sum": {
                             "$map": {
@@ -91,7 +91,7 @@ function fetchRecords(params) {
         {
             $match: {
                 createdAt: { $gte: startDate, $lte: endDate },
-                Total: { $gte: minCount, $lte: maxCount }
+                totalCount: { $gte: minCount, $lte: maxCount }
             }
         }
     ];
@@ -99,18 +99,16 @@ function fetchRecords(params) {
     mongoose.connect(url, mongoOptions).then(
         () => {
             console.log("Connected to mongoDB");
-            const query = records.aggregate(options);
-            query.exec().then(recordList => {
-                console.log(recordList);
-
-                return recordList;
-            });
         },
         (err) => {
             console.log("err", err);
 
             return err;
         });
+
+    const query = await records.aggregate(options);
+
+    return query;
 }
 
 module.exports = fetchRecords;

@@ -16,7 +16,7 @@ app.put('*', function (req, res) {
     res.send('Invalid route for post operation!');
 });*/
 
-app.post('/fetch-records', function(req, res) {
+app.post('/fetch-records', async function(req, res) {
     const fetchRecords = require('../src/fetchRecords');
 
     const requestParams = {
@@ -26,9 +26,23 @@ app.post('/fetch-records', function(req, res) {
         maxCount: req.body.maxCount
     };
 
-    const result = fetchRecords(requestParams);
+    const result = await fetchRecords(requestParams);
 
-    res.send(result);
+    var response = {
+        code: 0,
+        msg: "Success",
+        records: []
+    };
+
+    result.forEach(item => {
+        response.records.push({
+            key: item.key,
+            createdAt: item.createdAt,
+            totalCount: item.totalCount
+        });
+    });
+
+    res.send(response);
 });
 
 var server = app.listen(3000, function () {
