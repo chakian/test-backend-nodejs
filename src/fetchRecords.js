@@ -1,27 +1,6 @@
 var mongoose = require("mongoose");
-var assert = require("assert");
-//mongoose.Promise = global.Promise;
 
-var env = process.env.NODE_ENV || 'development';
-var config = require('./config')[env];
-
-const MONGO_USERNAME = config.database.user;
-const MONGO_PASSWORD = config.database.password;
-const MONGO_HOSTNAME = config.database.host;
-const MONGO_PORT = config.database.port;
-const MONGO_DB = config.database.db;
-
-const url = 'mongodb://' + MONGO_USERNAME + ':' + MONGO_PASSWORD + '@' + MONGO_HOSTNAME + ':' + MONGO_PORT + '/' + MONGO_DB;
-
-const mongoOptions = {
-    useNewUrlParser: true,
-    autoIndex: false, // Don't build indexes
-    reconnectTries: 100, // Never stop trying to reconnect
-    reconnectInterval: 500, // Reconnect every 500ms
-    poolSize: 10, // Maintain up to 10 socket connections
-    // If not connected, return errors immediately rather than waiting for reconnect
-    bufferMaxEntries: 0
-};
+require("./mongo")();
 
 var recordSchema = new mongoose.Schema({
     key: String,
@@ -95,16 +74,6 @@ async function fetchRecords(params) {
             }
         }
     ];
-
-    mongoose.connect(url, mongoOptions).then(
-        () => {
-            console.log("Connected to mongoDB");
-        },
-        (err) => {
-            console.log("err", err);
-
-            return err;
-        });
 
     const query = await records.aggregate(options);
 
