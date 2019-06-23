@@ -1,4 +1,4 @@
-const fetchTodos = require('../src/fetchTodos');
+const fetchRecords = require('../src/fetchRecords');
 
 test('fetch all items', () => {
     //arrange
@@ -7,7 +7,7 @@ test('fetch all items', () => {
     };
 
     //act
-    const response = fetchTodos(requestParams);
+    const response = fetchRecords(requestParams);
 
     //assert
     expect(response).toBe("2019-01-01");

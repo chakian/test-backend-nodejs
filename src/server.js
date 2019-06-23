@@ -10,18 +10,18 @@ app.delete('*', function (req, res) {
 app.put('*', function (req, res) {
     res.send('This server only accepts POST requests!');
 });
-app.post('*', function(req, res) {
+/*app.post('*', function(req, res) {
     res.send('Invalid route for post operation!');
-});
+});*/
 
-app.post('/fetch-todo', function(req, res) {
-    const fetchTodos = require('../src/fetchTodos');
+app.post('/fetch-records', function(req, res) {
+    const fetchRecords = require('../src/fetchRecords');
 
     const requestParams = {
         startDate: "2019-01-01"
     };
 
-    var result = fetchTodos(requestParams);
+    var result = fetchRecords(requestParams);
 
     res.send(result);
 });
